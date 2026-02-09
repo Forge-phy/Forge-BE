@@ -1,0 +1,14 @@
+[package]
+version = "1.0.0"
+title = "Forge API Extension"
+description = "HTTP API for Forge - Isaac Sim Bridge"
+category = "simulation"
+keywords = ["forge", "api", "bridge"]
+
+[dependencies]
+"omni.isaac.core" = {}
+"omni.kit.usd_undo" = {}
+"omni.replicator.core" = {}
+
+[[python.module]]
+name = "forge.api"

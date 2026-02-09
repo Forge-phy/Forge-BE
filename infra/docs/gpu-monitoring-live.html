@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge GPU 모니터링</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
+        .glow { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- 헤더 -->
+    <header class="bg-gray-800/50 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center font-bold text-xl">F</div>
+                <div>
+                    <h1 class="text-xl font-semibold">Forge GPU 모니터링</h1>
+                    <p class="text-sm text-gray-400">Physical AI 플랫폼 - 실시간 자원 관리</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full" id="connectionStatus">
+                    <div class="w-2 h-2 rounded-full" id="connectionDot"></div>
+                    <span class="text-sm" id="connectionText">연결 중...</span>
+                </div>
+                <span class="text-sm text-gray-400" id="currentTime"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- 서버 정보 -->
+        <div class="mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-gray-400">서버:</span>
+                    <code class="text-sm bg-gray-700 px-2 py-1 rounded">43.203.146.84 (AWS EC2)</code>
+                    <span class="text-sm text-gray-400">GPU:</span>
+                    <span class="text-sm font-medium" id="gpuName">-</span>
+                </div>
+                <div class="text-sm text-gray-400">
+                    마지막 업데이트: <span id="lastUpdate">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- GPU 상태 카드 -->
+        <section class="mb-8">
+            <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                </svg>
+                GPU 자원 현황 (실시간)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- GPU 사용률 -->
+                <div class="card rounded-xl p-5 border border-gray-700 glow">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">GPU 사용률</span>
+                        <span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded" id="gpuStatus">실시간</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="gpuUtil">--%</div>
+                    <div class="text-sm text-gray-400 mb-3">연산 사용량</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-500" id="gpuUtilBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- 메모리 -->
+                <div class="card rounded-xl p-5 border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">VRAM 사용량</span>
+                        <span class="text-xs text-gray-500" id="vramTotal">-- GB 전체</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="vramUsed">-- GB</div>
+                    <div class="text-sm text-gray-400 mb-3" id="memUtil">메모리: --%</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-2 rounded-full transition-all duration-500" id="vramBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- 전력 -->
+                <div class="card rounded-xl p-5 border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">전력 소비</span>
+                        <span class="text-xs text-gray-500" id="powerLimit">-- W 최대</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="powerDraw">-- W</div>
+                    <div class="text-sm text-gray-400 mb-3">현재 전력</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all duration-500" id="powerBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- 온도 -->
+                <div class="card rounded-xl p-5 border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">온도</span>
+                        <span class="text-xs text-gray-500">83°C 최대</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="gpuTemp">--°C</div>
+                    <div class="text-sm text-gray-400 mb-3">GPU 온도</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all duration-500" id="tempBar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 차트 영역 -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- 실시간 타임라인 -->
+            <div class="card rounded-xl p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">GPU 사용량 타임라인 (실시간)</h3>
+                <canvas id="usageChart" height="200"></canvas>
+            </div>
+
+            <!-- 프로세스 목록 -->
+            <div class="card rounded-xl p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">GPU 프로세스</h3>
+                <div class="space-y-3" id="processList">
+                    <div class="text-gray-400 text-sm">로딩 중...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 세션 관리 -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 세션 로그 -->
+            <div class="lg:col-span-2 card rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">세션 로그</h3>
+                    <div class="flex gap-2">
+                        <button onclick="startSession()" class="px-3 py-1.5 bg-green-600 hover:bg-green-500 rounded-lg text-sm">세션 시작</button>
+                        <button onclick="endSession()" class="px-3 py-1.5 bg-red-600 hover:bg-red-500 rounded-lg text-sm">세션 종료</button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="text-gray-400 border-b border-gray-700">
+                                <th class="text-left py-3 px-2">세션 ID</th>
+                                <th class="text-left py-3 px-2">사용자</th>
+                                <th class="text-left py-3 px-2">작업</th>
+                                <th class="text-left py-3 px-2">시작 시간</th>
+                                <th class="text-left py-3 px-2">상태</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessionLogs">
+                            <tr><td colspan="5" class="py-4 text-center text-gray-400">로딩 중...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 과금 요약 -->
+            <div class="card rounded-xl p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">과금 요약</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-700">
+                        <span class="text-gray-400">총 비용</span>
+                        <span class="text-2xl font-bold text-green-400" id="totalCost">₩0</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">총 GPU 사용 시간</span>
+                            <span id="totalHours">0시간</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">시간당 요금</span>
+                            <span>₩3,024/시간</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">활성 세션</span>
+                            <span id="activeCount">0개</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API 정보 -->
+        <section class="card rounded-xl p-6 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-4">API 엔드포인트</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-green-400 font-mono mb-2">GET /gpu/status</div>
+                    <div class="text-gray-400">실시간 GPU 상태</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-green-400 font-mono mb-2">GET /gpu/processes</div>
+                    <div class="text-gray-400">실행 중인 GPU 프로세스</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-blue-400 font-mono mb-2">POST /gpu/session/start</div>
+                    <div class="text-gray-400">사용 세션 시작</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-red-400 font-mono mb-2">POST /gpu/session/end</div>
+                    <div class="text-gray-400">사용 세션 종료</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const API_BASE = 'http://43.203.146.84:8877';
+        let currentSessionId = null;
+        let usageHistory = { labels: [], gpu: [], memory: [] };
+        let usageChart = null;
+
+        // 시간 업데이트
+        function updateTime() {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('ko-KR');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 연결 상태
+        function setConnected(connected) {
+            const dot = document.getElementById('connectionDot');
+            const text = document.getElementById('connectionText');
+            const container = document.getElementById('connectionStatus');
+
+            if (connected) {
+                dot.className = 'w-2 h-2 rounded-full bg-green-400 pulse';
+                text.textContent = '연결됨';
+                text.className = 'text-sm text-green-400';
+                container.className = 'flex items-center gap-2 px-3 py-1.5 bg-green-500/20 rounded-full';
+            } else {
+                dot.className = 'w-2 h-2 rounded-full bg-red-400';
+                text.textContent = '연결 끊김';
+                text.className = 'text-sm text-red-400';
+                container.className = 'flex items-center gap-2 px-3 py-1.5 bg-red-500/20 rounded-full';
+            }
+        }
+
+        // GPU 상태 조회
+        async function fetchGpuStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/gpu/status`);
+                const data = await response.json();
+
+                setConnected(true);
+
+                // UI 업데이트
+                document.getElementById('gpuName').textContent = data.gpu_name;
+                document.getElementById('gpuUtil').textContent = data.gpu_utilization.toFixed(0) + '%';
+                document.getElementById('gpuUtilBar').style.width = data.gpu_utilization + '%';
+
+                document.getElementById('vramUsed').textContent = data.memory_used.toFixed(1) + ' GB';
+                document.getElementById('vramTotal').textContent = data.memory_total.toFixed(0) + ' GB 전체';
+                document.getElementById('memUtil').textContent = '메모리: ' + data.memory_utilization.toFixed(0) + '%';
+                document.getElementById('vramBar').style.width = (data.memory_used / data.memory_total * 100) + '%';
+
+                document.getElementById('powerDraw').textContent = data.power_draw.toFixed(0) + 'W';
+                document.getElementById('powerLimit').textContent = data.power_limit.toFixed(0) + 'W 최대';
+                document.getElementById('powerBar').style.width = (data.power_draw / data.power_limit * 100) + '%';
+
+                document.getElementById('gpuTemp').textContent = data.temperature.toFixed(0) + '°C';
+                document.getElementById('tempBar').style.width = (data.temperature / 83 * 100) + '%';
+
+                document.getElementById('lastUpdate').textContent = new Date(data.timestamp).toLocaleTimeString('ko-KR');
+
+                // 차트 업데이트
+                const now = new Date().toLocaleTimeString('ko-KR', {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+                usageHistory.labels.push(now);
+                usageHistory.gpu.push(data.gpu_utilization);
+                usageHistory.memory.push(data.memory_utilization);
+
+                if (usageHistory.labels.length > 30) {
+                    usageHistory.labels.shift();
+                    usageHistory.gpu.shift();
+                    usageHistory.memory.shift();
+                }
+
+                if (usageChart) {
+                    usageChart.data.labels = usageHistory.labels;
+                    usageChart.data.datasets[0].data = usageHistory.gpu;
+                    usageChart.data.datasets[1].data = usageHistory.memory;
+                    usageChart.update('none');
+                }
+
+            } catch (error) {
+                console.error('GPU 상태 조회 오류:', error);
+                setConnected(false);
+            }
+        }
+
+        // 프로세스 조회
+        async function fetchProcesses() {
+            try {
+                const response = await fetch(`${API_BASE}/gpu/processes`);
+                const data = await response.json();
+
+                const container = document.getElementById('processList');
+                if (data.processes.length === 0) {
+                    container.innerHTML = '<div class="text-gray-400 text-sm">실행 중인 GPU 프로세스 없음</div>';
+                } else {
+                    container.innerHTML = data.processes.map(p => `
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">${p.name}</div>
+                                <div class="text-xs text-gray-400">PID: ${p.pid}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-medium text-amber-400">${(p.memory_mb / 1024).toFixed(1)} GB</div>
+                                <div class="text-xs text-gray-400">VRAM</div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('프로세스 조회 오류:', error);
+            }
+        }
+
+        // 세션 조회
+        async function fetchSessions() {
+            try {
+                const [sessionsRes, logsRes, billingRes] = await Promise.all([
+                    fetch(`${API_BASE}/gpu/sessions`),
+                    fetch(`${API_BASE}/gpu/logs`),
+                    fetch(`${API_BASE}/gpu/billing`)
+                ]);
+
+                const sessions = await sessionsRes.json();
+                const logs = await logsRes.json();
+                const billing = await billingRes.json();
+
+                // 활성 세션 수 업데이트
+                document.getElementById('activeCount').textContent = sessions.count + '개';
+
+                // 과금 업데이트
+                document.getElementById('totalHours').textContent = billing.total_hours + '시간';
+                document.getElementById('totalCost').textContent = '₩' + billing.total_cost.toLocaleString();
+
+                // 세션 테이블 업데이트
+                const allSessions = [...sessions.active, ...logs.logs].slice(0, 10);
+                const tbody = document.getElementById('sessionLogs');
+
+                if (allSessions.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-gray-400">세션 없음</td></tr>';
+                } else {
+                    tbody.innerHTML = allSessions.map(s => {
+                        const statusClass = s.status === 'running' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400';
+                        const statusText = s.status === 'running' ? '실행 중' : '완료';
+                        return `
+                            <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                                <td class="py-3 px-2 font-mono text-xs">${s.session_id}</td>
+                                <td class="py-3 px-2">${s.user}</td>
+                                <td class="py-3 px-2 text-gray-300">${s.task}</td>
+                                <td class="py-3 px-2 text-xs">${new Date(s.start_time).toLocaleString('ko-KR')}</td>
+                                <td class="py-3 px-2"><span class="px-2 py-0.5 rounded text-xs ${statusClass}">${statusText}</span></td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+
+            } catch (error) {
+                console.error('세션 조회 오류:', error);
+            }
+        }
+
+        // 세션 시작
+        async function startSession() {
+            const user = prompt('사용자 이름:', 'yangjeong-u');
+            const task = prompt('작업 내용:', 'Isaac Sim - 창고 시뮬레이션');
+
+            if (!user || !task) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/gpu/session/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user, task })
+                });
+                const data = await response.json();
+                currentSessionId = data.session_id;
+                alert(`세션 시작됨: ${currentSessionId}`);
+                fetchSessions();
+            } catch (error) {
+                alert('세션 시작 실패: ' + error.message);
+            }
+        }
+
+        // 세션 종료
+        async function endSession() {
+            if (!currentSessionId) {
+                const id = prompt('종료할 세션 ID:');
+                if (!id) return;
+                currentSessionId = id;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/gpu/session/end`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: currentSessionId })
+                });
+                const data = await response.json();
+                alert(`세션 종료됨\n비용: ₩${data.session.cost.toLocaleString()}\n시간: ${data.session.duration_hours}시간`);
+                currentSessionId = null;
+                fetchSessions();
+            } catch (error) {
+                alert('세션 종료 실패: ' + error.message);
+            }
+        }
+
+        // 차트 초기화
+        function initChart() {
+            const ctx = document.getElementById('usageChart').getContext('2d');
+            usageChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'GPU 사용률 (%)',
+                        data: [],
+                        borderColor: 'rgb(99, 102, 241)',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: '메모리 사용률 (%)',
+                        data: [],
+                        borderColor: 'rgb(245, 158, 11)',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: false,
+                    plugins: { legend: { labels: { color: '#9ca3af' } } },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } },
+                        x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af', maxTicksLimit: 10 } }
+                    }
+                }
+            });
+        }
+
+        // 초기화
+        initChart();
+        fetchGpuStatus();
+        fetchProcesses();
+        fetchSessions();
+
+        // 자동 갱신
+        setInterval(fetchGpuStatus, 2000);
+        setInterval(fetchProcesses, 5000);
+        setInterval(fetchSessions, 10000);
+    </script>
+</body>
+</html>
