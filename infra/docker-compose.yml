@@ -1,0 +1,115 @@
+services:
+  # Isaac Sim Container (NVIDIA GPU 필수)
+  isaac-sim:
+    image: nvcr.io/nvidia/isaac-sim:2023.1.1
+    container_name: forge-isaac-sim
+    runtime: nvidia
+    privileged: true  # GPU 캡처 장치 전체 접근 허용
+    network_mode: host  # 호스트 네트워크 사용
+    environment:
+      - ACCEPT_EULA=Y
+      - PRIVACY_CONSENT=Y
+      - OMNI_KIT_ALLOW_ROOT=1
+      # EGL Headless 렌더링 설정
+      - DISPLAY=:99
+      - __GL_EGL_DEVICE_ID=0
+      - __GLX_VENDOR_LIBRARY_NAME=nvidia
+      - __NV_PRIME_RENDER_OFFLOAD=1
+      - VK_ICD_FILENAMES=/etc/vulkan/icd.d/nvidia_icd.json
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    # network_mode: host 사용시 ports 불필요 (직접 호스트 포트 사용)
+    # ports:
+    #   - "8211:8211"   # Isaac Sim WebSocket API
+    #   - "8899:8899"   # Livestream (WebRTC)
+    #   - "8891:8891"   # Nucleus
+    #   - "47995:47995" # Kit Remote
+    ipc: host  # 공유 메모리 접근
+    volumes:
+      - ./isaac/scripts:/isaac-sim/scripts:ro
+      - ./isaac/assets:/isaac-sim/assets:rw
+      - isaac-cache:/root/.cache/ov
+      - isaac-data:/root/.local/share/ov/data
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw  # X11 소켓 마운트
+      - /dev/dri:/dev/dri:rw  # GPU DRM 장치
+      - /dev/nvidia0:/dev/nvidia0:rw  # NVIDIA GPU 장치
+      - /dev/nvidiactl:/dev/nvidiactl:rw
+      - /dev/nvidia-uvm:/dev/nvidia-uvm:rw
+      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools:rw
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    # Isaac Sim Native Headless + Livestream (Software Capture)
+    command: >
+      bash -c "
+        echo 'Starting Isaac Sim with Software capture...' &&
+        cd /isaac-sim &&
+        ./runheadless.native.sh \
+          --allow-root \
+          --enable omni.kit.livestream.native \
+          --/app/livestream/port=8899 \
+          --/app/livestream/allowResize=true \
+          --/app/livestream/logLevel=verbose \
+          --/app/livestream/captureMode=1 \
+          --/renderer/enabled=true \
+          --/app/renderer/resolution/width=1280 \
+          --/app/renderer/resolution/height=720
+      "
+    # Isaac Sim 초기화에 시간이 걸리므로 healthcheck 조정
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import socket; s=socket.socket(); s.connect(('localhost', 8211)); s.close()\" 2>/dev/null || exit 1"]
+      interval: 60s
+      timeout: 30s
+      retries: 10
+      start_period: 120s
+    restart: unless-stopped
+
+  # Forge Backend API
+  forge-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forge-api
+    ports:
+      - "8000:8000"
+    environment:
+      - ISAAC_SIM_MODE=docker
+      - ISAAC_SIM_HOST=isaac-sim
+      - ISAAC_SIM_PORT=8211
+      - ISAAC_STREAM_PORT=8899
+      - ISAAC_SIM_WEBSOCKET=ws://isaac-sim:8211
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # v2.1: Ollama 설치됨 - 로컬 보안 모드 활성화
+      - SECURITY_FIRST=true
+      - OLLAMA_HOST=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./:/app
+    # Isaac Sim 의존성 제거 (Mock 모드로 실행)
+    # depends_on:
+    #   isaac-sim:
+    #     condition: service_healthy
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Forge Frontend
+  forge-frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: forge-frontend
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_ISAAC_STREAM_URL=http://localhost:8899
+    depends_on:
+      - forge-api
+
+volumes:
+  isaac-cache:
+  isaac-data:

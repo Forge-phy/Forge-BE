@@ -1,0 +1,320 @@
+<mxfile host="embed.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.7">
+  <diagram id="WoGgFqaE-MEfGlXtj1lq" name="페이지-1">
+    <mxGraphModel dx="1058" dy="452" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#1a1a2e;" value="Forge v2.0 - WBS &amp; Gantt Chart" vertex="1">
+          <mxGeometry height="40" width="500" x="150" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="프로젝트 기간: 4개월 (16주) | 예상 비용: 약 1.5억원" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontColor=#666666;" vertex="1" parent="1"><mxGeometry x="150" y="55" width="500" height="25" as="geometry" /></mxCell>
+        <mxCell id="header_task" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=11;" value="Task" vertex="1">
+          <mxGeometry height="30" width="200" x="40" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="header_person" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=11;" value="담당" vertex="1">
+          <mxGeometry height="30" width="60" x="240" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="header_m1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#16213e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=11;" value="M1" vertex="1">
+          <mxGeometry height="30" width="120" x="300" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="header_m2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#16213e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=11;" value="M2" vertex="1">
+          <mxGeometry height="30" width="120" x="420" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="header_m3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#16213e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=11;" value="M3" vertex="1">
+          <mxGeometry height="30" width="120" x="540" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="header_m4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#16213e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=11;" value="M4" vertex="1">
+          <mxGeometry height="30" width="120" x="660" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="phase1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e8f4f8;strokeColor=#b8d4e3;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" value="1. 기획/분석" vertex="1">
+          <mxGeometry height="25" width="200" x="40" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="phase1_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=10;" value="PM" vertex="1">
+          <mxGeometry height="25" width="60" x="240" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="phase1_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4ecdc4;strokeColor=#2ab7ca;" value="" vertex="1">
+          <mxGeometry height="18" width="100" x="300" y="133" as="geometry" />
+        </mxCell>
+        <mxCell id="task1_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  요구사항 분석" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="task1_1_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="PM" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="task1_1_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8e6cf;strokeColor=#88d8b0;" value="" vertex="1">
+          <mxGeometry height="16" width="60" x="300" y="158" as="geometry" />
+        </mxCell>
+        <mxCell id="task1_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  이해관계자/Pain Point 분석" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="177" as="geometry" />
+        </mxCell>
+        <mxCell id="task1_2_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="PM" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="177" as="geometry" />
+        </mxCell>
+        <mxCell id="task1_2_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8e6cf;strokeColor=#88d8b0;" value="" vertex="1">
+          <mxGeometry height="16" width="50" x="330" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="phase2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ffcc80;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" value="2. 설계" vertex="1">
+          <mxGeometry height="25" width="200" x="40" y="199" as="geometry" />
+        </mxCell>
+        <mxCell id="phase2_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=10;" value="전체" vertex="1">
+          <mxGeometry height="25" width="60" x="240" y="199" as="geometry" />
+        </mxCell>
+        <mxCell id="phase2_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ff9f43;strokeColor=#ee8c2c;" value="" vertex="1">
+          <mxGeometry height="18" width="80" x="360" y="202" as="geometry" />
+        </mxCell>
+        <mxCell id="task2_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  아키텍처 설계" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="224" as="geometry" />
+        </mxCell>
+        <mxCell id="task2_1_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="BE" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="224" as="geometry" />
+        </mxCell>
+        <mxCell id="task2_1_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffd93d;strokeColor=#f5c700;" value="" vertex="1">
+          <mxGeometry height="16" width="50" x="360" y="227" as="geometry" />
+        </mxCell>
+        <mxCell id="task2_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  UI/UX 설계" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="246" as="geometry" />
+        </mxCell>
+        <mxCell id="task2_2_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="FE" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="246" as="geometry" />
+        </mxCell>
+        <mxCell id="task2_2_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffd93d;strokeColor=#f5c700;" value="" vertex="1">
+          <mxGeometry height="16" width="40" x="390" y="249" as="geometry" />
+        </mxCell>
+        <mxCell id="phase3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#9fa8da;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" value="3. 인프라/환경 구축" vertex="1">
+          <mxGeometry height="25" width="200" x="40" y="268" as="geometry" />
+        </mxCell>
+        <mxCell id="phase3_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=10;" value="DevOps" vertex="1">
+          <mxGeometry height="25" width="60" x="240" y="268" as="geometry" />
+        </mxCell>
+        <mxCell id="phase3_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5c6bc0;strokeColor=#3949ab;" value="" vertex="1">
+          <mxGeometry height="18" width="90" x="420" y="271" as="geometry" />
+        </mxCell>
+        <mxCell id="task3_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  AWS EC2 + GPU 세팅" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="293" as="geometry" />
+        </mxCell>
+        <mxCell id="task3_1_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="DevOps" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="293" as="geometry" />
+        </mxCell>
+        <mxCell id="task3_1_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#7986cb;strokeColor=#5c6bc0;" value="" vertex="1">
+          <mxGeometry height="16" width="50" x="420" y="296" as="geometry" />
+        </mxCell>
+        <mxCell id="task3_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  Isaac Sim 설치/구성" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="task3_2_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="DevOps" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="task3_2_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#7986cb;strokeColor=#5c6bc0;" value="" vertex="1">
+          <mxGeometry height="16" width="60" x="450" y="318" as="geometry" />
+        </mxCell>
+        <mxCell id="phase4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#f48fb1;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" value="4. LLM 브릿지 개발" vertex="1">
+          <mxGeometry height="25" width="200" x="40" y="337" as="geometry" />
+        </mxCell>
+        <mxCell id="phase4_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=10;" value="BE" vertex="1">
+          <mxGeometry height="25" width="60" x="240" y="337" as="geometry" />
+        </mxCell>
+        <mxCell id="phase4_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ec407a;strokeColor=#d81b60;" value="" vertex="1">
+          <mxGeometry height="18" width="130" x="450" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="task4_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  LLM 파이프라인 (OpenAI/Qwen)" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="362" as="geometry" />
+        </mxCell>
+        <mxCell id="task4_1_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="BE" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="362" as="geometry" />
+        </mxCell>
+        <mxCell id="task4_1_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#ec407a;" value="" vertex="1">
+          <mxGeometry height="16" width="70" x="450" y="365" as="geometry" />
+        </mxCell>
+        <mxCell id="task4_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  RAG 시스템 구축 (ChromaDB)" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="384" as="geometry" />
+        </mxCell>
+        <mxCell id="task4_2_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="BE" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="384" as="geometry" />
+        </mxCell>
+        <mxCell id="task4_2_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#ec407a;" value="" vertex="1">
+          <mxGeometry height="16" width="60" x="500" y="387" as="geometry" />
+        </mxCell>
+        <mxCell id="phase5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#80cbc4;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" value="5. LSTM 예측 개발" vertex="1">
+          <mxGeometry height="25" width="200" x="40" y="406" as="geometry" />
+        </mxCell>
+        <mxCell id="phase5_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=10;" value="ML" vertex="1">
+          <mxGeometry height="25" width="60" x="240" y="406" as="geometry" />
+        </mxCell>
+        <mxCell id="phase5_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#26a69a;strokeColor=#00897b;" value="" vertex="1">
+          <mxGeometry height="18" width="100" x="540" y="409" as="geometry" />
+        </mxCell>
+        <mxCell id="task5_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  Sim2Real Gap 예측 모델" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="431" as="geometry" />
+        </mxCell>
+        <mxCell id="task5_1_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="ML" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="431" as="geometry" />
+        </mxCell>
+        <mxCell id="task5_1_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4db6ac;strokeColor=#26a69a;" value="" vertex="1">
+          <mxGeometry height="16" width="60" x="540" y="434" as="geometry" />
+        </mxCell>
+        <mxCell id="phase6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#ffecb3;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" value="6. Frontend / Isaac Sim 연동" vertex="1">
+          <mxGeometry height="25" width="200" x="40" y="453" as="geometry" />
+        </mxCell>
+        <mxCell id="phase6_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=10;" value="FE/BE" vertex="1">
+          <mxGeometry height="25" width="60" x="240" y="453" as="geometry" />
+        </mxCell>
+        <mxCell id="phase6_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffc107;strokeColor=#ffa000;" value="" vertex="1">
+          <mxGeometry height="18" width="140" x="540" y="456" as="geometry" />
+        </mxCell>
+        <mxCell id="task6_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  Vue 3 대시보드 + Three.js" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="478" as="geometry" />
+        </mxCell>
+        <mxCell id="task6_1_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="FE" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="478" as="geometry" />
+        </mxCell>
+        <mxCell id="task6_1_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffd54f;strokeColor=#ffc107;" value="" vertex="1">
+          <mxGeometry height="16" width="70" x="540" y="481" as="geometry" />
+        </mxCell>
+        <mxCell id="task6_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  Isaac Sim Forge API + WebRTC" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="task6_2_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="BE" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="task6_2_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffd54f;strokeColor=#ffc107;" value="" vertex="1">
+          <mxGeometry height="16" width="80" x="590" y="503" as="geometry" />
+        </mxCell>
+        <mxCell id="phase7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#90caf9;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" value="7. 통합/테스트/배포" vertex="1">
+          <mxGeometry height="25" width="200" x="40" y="522" as="geometry" />
+        </mxCell>
+        <mxCell id="phase7_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=10;" value="전체" vertex="1">
+          <mxGeometry height="25" width="60" x="240" y="522" as="geometry" />
+        </mxCell>
+        <mxCell id="phase7_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e88e5;strokeColor=#1565c0;" value="" vertex="1">
+          <mxGeometry height="18" width="110" x="660" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="task7_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  통합 테스트 / 버그 수정" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="547" as="geometry" />
+        </mxCell>
+        <mxCell id="task7_1_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="QA" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="547" as="geometry" />
+        </mxCell>
+        <mxCell id="task7_1_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#42a5f5;strokeColor=#1e88e5;" value="" vertex="1">
+          <mxGeometry height="16" width="60" x="660" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="task7_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=10;align=left;" value="  클라우드 배포 / 문서화" vertex="1">
+          <mxGeometry height="22" width="200" x="40" y="569" as="geometry" />
+        </mxCell>
+        <mxCell id="task7_2_p" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;fontSize=9;" value="DevOps" vertex="1">
+          <mxGeometry height="22" width="60" x="240" y="569" as="geometry" />
+        </mxCell>
+        <mxCell id="task7_2_bar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#42a5f5;strokeColor=#1e88e5;" value="" vertex="1">
+          <mxGeometry height="16" width="60" x="710" y="572" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;shadow=1;" value="" vertex="1">
+          <mxGeometry height="210" width="760" x="30" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#1a1a2e;" value="프로젝트 비용 산정 (4개월 MVP 기준)" vertex="1">
+          <mxGeometry height="25" width="280" x="50" y="615" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_h1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=10;" value="인력 비용" vertex="1">
+          <mxGeometry height="22" width="120" x="50" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_h2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=10;" value="인원" vertex="1">
+          <mxGeometry height="22" width="50" x="170" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_h3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=10;" value="월 단가" vertex="1">
+          <mxGeometry height="22" width="70" x="220" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_h4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=10;" value="기간" vertex="1">
+          <mxGeometry height="22" width="50" x="290" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_h5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;fontColor=#ffffff;fontStyle=1;fontSize=10;" value="소계" vertex="1">
+          <mxGeometry height="22" width="70" x="340" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r1_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;align=left;spacingLeft=5;" value="PM/기획" vertex="1">
+          <mxGeometry height="18" width="120" x="50" y="667" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r1_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="1명" vertex="1">
+          <mxGeometry height="18" width="50" x="170" y="667" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r1_3" value="800만" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" vertex="1" parent="1"><mxGeometry x="220" y="667" width="70" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r1_4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="4개월" vertex="1">
+          <mxGeometry height="18" width="50" x="290" y="667" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r1_5" value="3,200만" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" vertex="1" parent="1"><mxGeometry x="340" y="667" width="70" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r2_1" value="AI엔지니어(백엔드)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;align=left;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="50" y="685" width="120" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r2_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="2명" vertex="1">
+          <mxGeometry height="18" width="50" x="170" y="685" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r2_3" value="1,000만" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" vertex="1" parent="1"><mxGeometry x="220" y="685" width="70" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r2_4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="4개월" vertex="1">
+          <mxGeometry height="18" width="50" x="290" y="685" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r2_5" value="8,000만" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" vertex="1" parent="1"><mxGeometry x="340" y="685" width="70" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r3_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;align=left;spacingLeft=5;" value="프론트엔드 개발자" vertex="1">
+          <mxGeometry height="18" width="120" x="50" y="703" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r3_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="1명" vertex="1">
+          <mxGeometry height="18" width="50" x="170" y="703" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r3_3" value="600만" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" vertex="1" parent="1"><mxGeometry x="220" y="703" width="70" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r3_4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="3개월" vertex="1">
+          <mxGeometry height="18" width="50" x="290" y="703" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r3_5" value="1,800만" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" vertex="1" parent="1"><mxGeometry x="340" y="703" width="70" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r4_1" value="AI엔지니어(ML)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;align=left;spacingLeft=5;" vertex="1" parent="1"><mxGeometry x="50" y="721" width="120" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r4_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="1명" vertex="1">
+          <mxGeometry height="18" width="50" x="170" y="721" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r4_3" value="900만" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" vertex="1" parent="1"><mxGeometry x="220" y="721" width="70" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_r4_4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="2개월" vertex="1">
+          <mxGeometry height="18" width="50" x="290" y="721" as="geometry" />
+        </mxCell>
+        <mxCell id="cost_r4_5" value="1,800만" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" vertex="1" parent="1"><mxGeometry x="340" y="721" width="70" height="18" as="geometry" /></mxCell>
+        <mxCell id="cost_labor_total" value="인력 소계: 14,800만원" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#90caf9;fontSize=9;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="50" y="739" width="360" height="18" as="geometry" /></mxCell>
+        <mxCell id="infra_h1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ff9800;strokeColor=#f57c00;fontColor=#ffffff;fontStyle=1;fontSize=10;" value="인프라/기타 비용" vertex="1">
+          <mxGeometry height="22" width="180" x="430" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_h2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ff9800;strokeColor=#f57c00;fontColor=#ffffff;fontStyle=1;fontSize=10;" value="비용" vertex="1">
+          <mxGeometry height="22" width="80" x="610" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_r1_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#e0e0e0;fontSize=9;align=left;spacingLeft=5;" value="AWS g6e.2xlarge (L40S GPU)" vertex="1">
+          <mxGeometry height="18" width="180" x="430" y="667" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_r1_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=8;" value="" vertex="1">
+          <mxGeometry height="18" width="80" x="610" y="667" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_r1_detail" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=8;fontColor=#666666;" value="$2.24/h × 8h × 20일 × 4개월" vertex="1">
+          <mxGeometry height="15" width="180" x="430" y="685" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_r1_v" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;fontStyle=1;" value="약 200만원" vertex="1">
+          <mxGeometry height="15" width="80" x="610" y="685" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_r2_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;align=left;spacingLeft=5;" value="OpenAI API 사용료" vertex="1">
+          <mxGeometry height="18" width="180" x="430" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_r2_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="약 100만원" vertex="1">
+          <mxGeometry height="18" width="80" x="610" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_r3_1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;align=left;spacingLeft=5;" value="기타 (도메인, S3 등)" vertex="1">
+          <mxGeometry height="18" width="180" x="430" y="718" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_r3_2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;fontSize=9;" value="약 50만원" vertex="1">
+          <mxGeometry height="18" width="80" x="610" y="718" as="geometry" />
+        </mxCell>
+        <mxCell id="infra_total" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ffcc80;fontSize=9;fontStyle=1;" value="인프라 소계: 350만원" vertex="1">
+          <mxGeometry height="18" width="260" x="430" y="739" as="geometry" />
+        </mxCell>
+        <mxCell id="actual_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#81c784;" value="" vertex="1">
+          <mxGeometry height="22" width="260" x="430" y="762" as="geometry" />
+        </mxCell>
+        <mxCell id="actual_text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=9;fontColor=#2e7d32;fontStyle=2;" value="PoC 실제 사용 (이틀): $26 ≈ 3.5만원" vertex="1">
+          <mxGeometry height="22" width="260" x="430" y="762" as="geometry" />
+        </mxCell>
+        <mxCell id="total_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4ecdc4;strokeColor=#2ab7ca;shadow=1;" value="" vertex="1">
+          <mxGeometry height="22" width="360" x="50" y="762" as="geometry" />
+        </mxCell>
+        <mxCell id="total_text" value="총 예상 비용: 약 15,150만원 (≈ 1.5억)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="50" y="762" width="360" height="22" as="geometry" /></mxCell>
+        <mxCell id="note" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontSize=8;fontColor=#999999;" value="※ 업무시간 기준 (8h/일 × 20일/월) | g6e.2xlarge: $2.24/hour (서울 리전)" vertex="1">
+          <mxGeometry height="15" width="330" x="450" y="788" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge GPU 모니터링</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
+        .glow { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- 헤더 -->
+    <header class="bg-gray-800/50 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center font-bold text-xl">F</div>
+                <div>
+                    <h1 class="text-xl font-semibold">Forge GPU 모니터링</h1>
+                    <p class="text-sm text-gray-400">Physical AI 플랫폼 - 자원 관리 대시보드</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-green-500/20 rounded-full">
+                    <div class="w-2 h-2 bg-green-400 rounded-full pulse"></div>
+                    <span class="text-sm text-green-400">연결됨</span>
+                </div>
+                <span class="text-sm text-gray-400" id="currentTime"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- GPU 상태 카드 -->
+        <section class="mb-8">
+            <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                </svg>
+                GPU 자원 현황
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- GPU 사용률 -->
+                <div class="card rounded-xl p-5 border border-gray-700 glow">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">NVIDIA L40S</span>
+                        <span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">활성</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="gpuUtil">78%</div>
+                    <div class="text-sm text-gray-400 mb-3">GPU 사용률</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-500" id="gpuUtilBar" style="width: 78%"></div>
+                    </div>
+                </div>
+
+                <!-- 메모리 -->
+                <div class="card rounded-xl p-5 border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">VRAM 사용량</span>
+                        <span class="text-xs text-gray-500">44 GB 전체</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="vramUsed">32.5 GB</div>
+                    <div class="text-sm text-gray-400 mb-3">사용 / 44 GB</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-2 rounded-full transition-all duration-500" id="vramBar" style="width: 74%"></div>
+                    </div>
+                </div>
+
+                <!-- 전력 -->
+                <div class="card rounded-xl p-5 border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">전력 소비</span>
+                        <span class="text-xs text-gray-500">300W 최대</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="powerDraw">245W</div>
+                    <div class="text-sm text-gray-400 mb-3">현재 / 300W 최대</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all duration-500" id="powerBar" style="width: 82%"></div>
+                    </div>
+                </div>
+
+                <!-- 온도 -->
+                <div class="card rounded-xl p-5 border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">온도</span>
+                        <span class="text-xs text-gray-500">83°C 최대</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="gpuTemp">68°C</div>
+                    <div class="text-sm text-gray-400 mb-3">현재 온도</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all duration-500" id="tempBar" style="width: 68%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 차트 영역 -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- 사용량 타임라인 -->
+            <div class="card rounded-xl p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">GPU 사용량 타임라인 (24시간)</h3>
+                <canvas id="usageChart" height="200"></canvas>
+            </div>
+
+            <!-- 사용자별 분포 -->
+            <div class="card rounded-xl p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">사용자별 사용량</h3>
+                <canvas id="userChart" height="200"></canvas>
+            </div>
+        </section>
+
+        <!-- 사용 로그 & 과금 -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 세션 로그 -->
+            <div class="lg:col-span-2 card rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">세션 로그</h3>
+                    <button class="text-sm text-indigo-400 hover:text-indigo-300">CSV 내보내기</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="text-gray-400 border-b border-gray-700">
+                                <th class="text-left py-3 px-2">사용자</th>
+                                <th class="text-left py-3 px-2">작업</th>
+                                <th class="text-left py-3 px-2">사용 시간</th>
+                                <th class="text-left py-3 px-2">GPU 시간</th>
+                                <th class="text-left py-3 px-2">비용</th>
+                                <th class="text-left py-3 px-2">상태</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessionLogs">
+                            <!-- 동적 콘텐츠 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 과금 요약 -->
+            <div class="card rounded-xl p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">과금 요약</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-700">
+                        <span class="text-gray-400">이번 달</span>
+                        <span class="text-2xl font-bold text-green-400" id="monthCost">₩128,500</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">총 GPU 시간</span>
+                            <span id="totalHours">42.5시간</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">시간당 요금</span>
+                            <span>₩3,024/시간</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">활성 세션</span>
+                            <span id="activeSessions">3개</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">피크 시간대</span>
+                            <span>14:00 - 18:00</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-gray-700">
+                        <div class="text-xs text-gray-500 mb-2">작업별 분포</div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 bg-indigo-500 rounded"></div>
+                                <span class="text-sm flex-1">Isaac Sim</span>
+                                <span class="text-sm">68%</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 bg-purple-500 rounded"></div>
+                                <span class="text-sm flex-1">LLM 추론</span>
+                                <span class="text-sm">22%</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 bg-pink-500 rounded"></div>
+                                <span class="text-sm flex-1">LSTM 학습</span>
+                                <span class="text-sm">10%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 활성 세션 -->
+        <section class="mb-8">
+            <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"/>
+                </svg>
+                활성 세션
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="activeSessionCards">
+                <!-- 세션 1: 양정우 -->
+                <div class="card rounded-xl p-5 border border-gray-700 border-l-4 border-l-green-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-sm font-medium">양</div>
+                            <div>
+                                <div class="font-medium">양정우</div>
+                                <div class="text-xs text-gray-400">Isaac Sim - 창고 시뮬레이션</div>
+                            </div>
+                        </div>
+                        <div class="w-2 h-2 bg-green-400 rounded-full pulse"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div>
+                            <div class="text-gray-400">사용 시간</div>
+                            <div class="font-medium" id="session1Duration">01:23:45</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-400">GPU 사용률</div>
+                            <div class="font-medium">78%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 세션 2: 임수현 -->
+                <div class="card rounded-xl p-5 border border-gray-700 border-l-4 border-l-blue-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-sm font-medium">임</div>
+                            <div>
+                                <div class="font-medium">임수현</div>
+                                <div class="text-xs text-gray-400">LLM 추론 - Qwen</div>
+                            </div>
+                        </div>
+                        <div class="w-2 h-2 bg-green-400 rounded-full pulse"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div>
+                            <div class="text-gray-400">사용 시간</div>
+                            <div class="font-medium">00:45:12</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-400">GPU 사용률</div>
+                            <div class="font-medium">15%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 세션 3: 권세빈 -->
+                <div class="card rounded-xl p-5 border border-gray-700 border-l-4 border-l-amber-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-sm font-medium">권</div>
+                            <div>
+                                <div class="font-medium">권세빈</div>
+                                <div class="text-xs text-gray-400">LSTM 학습</div>
+                            </div>
+                        </div>
+                        <div class="w-2 h-2 bg-green-400 rounded-full pulse"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div>
+                            <div class="text-gray-400">사용 시간</div>
+                            <div class="font-medium">00:12:33</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-400">GPU 사용률</div>
+                            <div class="font-medium">5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API 엔드포인트 정보 -->
+        <section class="card rounded-xl p-6 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-4">Forge API 엔드포인트 (백엔드 연동)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-indigo-400 font-mono mb-2">GET /gpu/status</div>
+                    <div class="text-gray-400">실시간 GPU 상태 (사용률, 메모리, 온도)</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-indigo-400 font-mono mb-2">GET /gpu/sessions</div>
+                    <div class="text-gray-400">활성 사용자 세션 및 자원 사용량</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-indigo-400 font-mono mb-2">GET /gpu/logs</div>
+                    <div class="text-gray-400">과금/미터링용 사용 기록</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-indigo-400 font-mono mb-2">GET /gpu/billing</div>
+                    <div class="text-gray-400">비용 계산 및 사용량 요약</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 시간 업데이트
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleString('ko-KR');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 세션 시간 카운터
+        let sessionSeconds = 5025; // 01:23:45
+        setInterval(() => {
+            sessionSeconds++;
+            const h = Math.floor(sessionSeconds / 3600);
+            const m = Math.floor((sessionSeconds % 3600) / 60);
+            const s = sessionSeconds % 60;
+            document.getElementById('session1Duration').textContent =
+                `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }, 1000);
+
+        // 세션 로그 데이터
+        const sessionLogs = [
+            { user: '양정우', task: 'Isaac Sim - 창고 30x20m', duration: '01:23:45', gpuTime: '1.2시간', cost: '₩3,629', status: 'running' },
+            { user: '임수현', task: 'LLM 추론 - 환경 파싱', duration: '00:45:12', gpuTime: '0.3시간', cost: '₩907', status: 'running' },
+            { user: '권세빈', task: 'LSTM 학습 - Sim2Real v3', duration: '00:12:33', gpuTime: '0.1시간', cost: '₩302', status: 'running' },
+            { user: '김민준', task: 'Isaac Sim - 공장 레이아웃', duration: '02:15:00', gpuTime: '2.1시간', cost: '₩6,350', status: 'completed' },
+            { user: '이서연', task: 'LSTM 예측 - 배치', duration: '00:05:22', gpuTime: '0.05시간', cost: '₩151', status: 'completed' },
+        ];
+
+        const logsContainer = document.getElementById('sessionLogs');
+        sessionLogs.forEach(log => {
+            const statusClass = log.status === 'running' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400';
+            const statusText = log.status === 'running' ? '실행 중' : '완료';
+            logsContainer.innerHTML += `
+                <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                    <td class="py-3 px-2 font-medium">${log.user}</td>
+                    <td class="py-3 px-2 text-gray-300">${log.task}</td>
+                    <td class="py-3 px-2">${log.duration}</td>
+                    <td class="py-3 px-2">${log.gpuTime}</td>
+                    <td class="py-3 px-2 text-green-400">${log.cost}</td>
+                    <td class="py-3 px-2"><span class="px-2 py-0.5 rounded text-xs ${statusClass}">${statusText}</span></td>
+                </tr>
+            `;
+        });
+
+        // 사용량 타임라인 차트
+        const usageCtx = document.getElementById('usageChart').getContext('2d');
+        new Chart(usageCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+                datasets: [{
+                    label: 'GPU 사용률 (%)',
+                    data: [15, 12, 8, 10, 35, 65, 78, 85, 92, 88, 72, 45],
+                    borderColor: 'rgb(99, 102, 241)',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: '메모리 사용률 (%)',
+                    data: [20, 18, 15, 18, 45, 68, 74, 82, 85, 80, 65, 40],
+                    borderColor: 'rgb(245, 158, 11)',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { labels: { color: '#9ca3af' } } },
+                scales: {
+                    y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } },
+                    x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } }
+                }
+            }
+        });
+
+        // 사용자별 분포 차트
+        const userCtx = document.getElementById('userChart').getContext('2d');
+        new Chart(userCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['양정우', '임수현', '권세빈', '김민준', '이서연'],
+                datasets: [{
+                    data: [35, 25, 20, 15, 5],
+                    backgroundColor: [
+                        'rgb(99, 102, 241)',
+                        'rgb(168, 85, 247)',
+                        'rgb(236, 72, 153)',
+                        'rgb(245, 158, 11)',
+                        'rgb(107, 114, 128)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'right', labels: { color: '#9ca3af' } } }
+            }
+        });
+
+        // 실시간 업데이트 시뮬레이션
+        setInterval(() => {
+            const gpuUtil = 70 + Math.random() * 20;
+            const vram = 30 + Math.random() * 5;
+            const power = 230 + Math.random() * 30;
+            const temp = 65 + Math.random() * 8;
+
+            document.getElementById('gpuUtil').textContent = gpuUtil.toFixed(0) + '%';
+            document.getElementById('gpuUtilBar').style.width = gpuUtil + '%';
+
+            document.getElementById('vramUsed').textContent = vram.toFixed(1) + ' GB';
+            document.getElementById('vramBar').style.width = (vram / 44 * 100) + '%';
+
+            document.getElementById('powerDraw').textContent = power.toFixed(0) + 'W';
+            document.getElementById('powerBar').style.width = (power / 300 * 100) + '%';
+
+            document.getElementById('gpuTemp').textContent = temp.toFixed(0) + '°C';
+            document.getElementById('tempBar').style.width = (temp / 83 * 100) + '%';
+        }, 2000);
+    </script>
+</body>
+</html>
