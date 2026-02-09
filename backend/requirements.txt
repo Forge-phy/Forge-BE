@@ -1,0 +1,25 @@
+# Forge v2.0 Dependencies
+
+# Web Framework
+fastapi>=0.109.0
+uvicorn>=0.27.0
+httpx>=0.26.0
+pydantic>=2.5.0
+
+# LLM
+openai>=1.12.0
+
+# RAG
+chromadb>=0.4.22
+sentence-transformers>=2.3.0
+
+# LSTM
+torch>=2.1.0
+numpy>=1.26.0
+pandas>=2.1.0
+
+# Environment
+python-dotenv>=1.0.0
+
+# Isaac Sim Docker 연동
+aiohttp>=3.9.0

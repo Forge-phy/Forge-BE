@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/
+.claude*
+
+# Data
+*.sqlite3
+data/chroma/
+
+# Model checkpoints (large files)
+lstm/checkpoints/*.pt
+lstm/data/*.pth
+lstm/data/*.csv
+
+# Logs
+*.log
+logs/
+
+# Docker volumes
+isaac-cache/
+isaac-data/
+
+# Secrets
+*.pem
+*.key
+credentials.json
