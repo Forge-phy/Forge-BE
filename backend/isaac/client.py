@@ -3,9 +3,9 @@ Forge Isaac Sim - 클라이언트
 Isaac Sim 연결 및 세션 관리
 
 환경 변수:
-- ISAAC_SIM_MODE: "docker" | "local" | "mock" | "aws" (기본: mock)
+- ISAAC_SIM_MODE: "docker" | "local" | "mock" | "runpod" (기본: mock)
 - ISAAC_SIM_HOST: Isaac Sim 호스트 (기본: localhost)
-- ISAAC_SIM_PORT: Isaac Sim 포트 (기본: 8211, AWS는 8011)
+- ISAAC_SIM_PORT: Isaac Sim 포트 (기본: 8211)
 """
 
 import os
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 # 환경 변수에서 모드 확인
 ISAAC_SIM_MODE = os.getenv("ISAAC_SIM_MODE", "mock")
 ISAAC_SIM_HOST = os.getenv("ISAAC_SIM_HOST", "localhost")
-ISAAC_SIM_PORT = int(os.getenv("ISAAC_SIM_PORT", "8011"))  # AWS 기본 포트
+ISAAC_SIM_PORT = int(os.getenv("ISAAC_SIM_PORT", "8211"))
 ISAAC_STREAM_PORT = int(os.getenv("ISAAC_STREAM_PORT", "8899"))
 
 
@@ -43,7 +43,7 @@ class IsaacSimConfig:
     headless: bool = True
     gpu_id: int = 0
     timeout: float = 30.0
-    mode: str = ISAAC_SIM_MODE  # "docker", "local", "mock"
+    mode: str = ISAAC_SIM_MODE  # "docker", "local", "mock", "runpod"
 
 
 class IsaacSimClient:
@@ -101,9 +101,9 @@ class IsaacSimClient:
                 # Docker 모드 - WebSocket으로 연결
                 return await self._connect_docker()
 
-            elif self.mode == "aws":
-                # AWS 모드 - HTTP REST API로 연결
-                return await self._connect_aws()
+            elif self.mode == "runpod":
+                # RunPod 모드 - HTTP REST API로 연결
+                return await self._connect_runpod()
 
             elif self.mode == "local":
                 # 로컬 모드 - 직접 연결
@@ -144,8 +144,8 @@ class IsaacSimClient:
 
         return False
 
-    async def _connect_aws(self) -> bool:
-        """AWS Isaac Sim API 서버에 HTTP로 연결"""
+    async def _connect_runpod(self) -> bool:
+        """RunPod Isaac Sim API 서버에 HTTP로 연결"""
         api_url = f"http://{self.config.host}:{self.config.port}"
 
         try:
@@ -158,13 +158,13 @@ class IsaacSimClient:
                         data = await response.json()
                         if data.get("status") == "running":
                             self.status = ConnectionStatus.CONNECTED
-                            logger.info(f"Connected to AWS Isaac Sim API at {api_url}")
+                            logger.info(f"Connected to RunPod Isaac Sim API at {api_url}")
                             return True
 
         except aiohttp.ClientError as e:
-            logger.error(f"AWS connection failed: {e}")
+            logger.error(f"RunPod connection failed: {e}")
         except Exception as e:
-            logger.error(f"Unexpected error connecting to AWS: {e}")
+            logger.error(f"Unexpected error connecting to RunPod: {e}")
 
         return False
 
@@ -260,9 +260,9 @@ class IsaacSimClient:
                 "message": "Mock environment created"
             }
 
-        elif self.mode == "aws":
-            # AWS Isaac Sim API로 환경 생성
-            return await self._create_aws_environment(config)
+        elif self.mode == "runpod":
+            # RunPod Isaac Sim API로 환경 생성
+            return await self._create_runpod_environment(config)
 
         elif self.mode == "docker":
             # Docker로 명령 전송
@@ -299,9 +299,9 @@ class IsaacSimClient:
                 "robot_metrics": []
             }
 
-        elif self.mode == "aws":
-            # AWS Isaac Sim API로 시뮬레이션 실행
-            return await self._run_aws_simulation(duration)
+        elif self.mode == "runpod":
+            # RunPod Isaac Sim API로 시뮬레이션 실행
+            return await self._run_runpod_simulation(duration)
 
         elif self.mode == "docker":
             return await self._send_docker_command("run_simulation", {"duration": duration})
@@ -311,8 +311,8 @@ class IsaacSimClient:
 
         return {"success": False, "error": "Unknown mode"}
 
-    async def _create_aws_environment(self, config: Dict[str, Any]) -> Dict[str, Any]:
-        """AWS Isaac Sim Forge API로 환경 생성 (8899 포트)"""
+    async def _create_runpod_environment(self, config: Dict[str, Any]) -> Dict[str, Any]:
+        """RunPod Isaac Sim Forge API로 환경 생성 (8899 포트)"""
         # Forge API는 8899 포트 사용
         forge_api_url = f"http://{self.config.host}:{self.config.stream_port}"
 
@@ -360,7 +360,7 @@ class IsaacSimClient:
                             "scene_id": "isaac_sim_scene",
                             "objects_created": result.get("objects_created", 0),
                             "message": result.get("message", "Environment created"),
-                            "mode": "aws"
+                            "mode": "runpod"
                         }
                     else:
                         return {
@@ -372,11 +372,11 @@ class IsaacSimClient:
             logger.error(f"Forge API connection failed: {e}")
             return {"success": False, "error": f"Connection failed: {e}"}
         except Exception as e:
-            logger.error(f"AWS environment creation failed: {e}")
+            logger.error(f"RunPod environment creation failed: {e}")
             return {"success": False, "error": str(e)}
 
-    async def _run_aws_simulation(self, duration: float) -> Dict[str, Any]:
-        """AWS Isaac Sim API로 시뮬레이션 실행"""
+    async def _run_runpod_simulation(self, duration: float) -> Dict[str, Any]:
+        """RunPod Isaac Sim API로 시뮬레이션 실행"""
         api_url = f"http://{self.config.host}:{self.config.port}"
 
         try:
@@ -400,13 +400,13 @@ class IsaacSimClient:
                             "total_collisions": random.randint(0, 3),
                             "total_items_processed": result.get("steps_executed", steps),
                             "robot_metrics": [],
-                            "mode": "aws"
+                            "mode": "runpod"
                         }
                     else:
                         return {"success": False, "error": result.get("detail", "Simulation failed")}
 
         except Exception as e:
-            logger.error(f"AWS simulation failed: {e}")
+            logger.error(f"RunPod simulation failed: {e}")
             return {"success": False, "error": str(e)}
 
     async def _send_docker_command(self, command: str, params: Dict[str, Any]) -> Dict[str, Any]:
