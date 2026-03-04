@@ -1,5 +1,5 @@
 """
-Forge LLM Service v2.0 - OpenAI + Qwen 하이브리드
+Forge LLM Service v4.0 - OpenAI + Qwen 하이브리드
 민감도에 따른 LLM 분기 처리
 """
 import json
@@ -306,97 +306,6 @@ async def analyze_simulation_result(
             prompt,
             temperature=0.5,
             max_tokens=3000,
-            sensitivity=sensitivity,
-            force_provider=force_provider
-        )
-
-        return LLMResponse(
-            success=True,
-            data=raw_response,
-            raw_response=raw_response,
-            provider=provider.value,
-            sensitivity=sensitivity.value
-        )
-
-    except Exception as e:
-        return LLMResponse(
-            success=False,
-            data=None,
-            raw_response="",
-            error=str(e)
-        )
-
-
-# ============================================================
-# v2.0 신규: LSTM → LLM 보고서 생성 파이프라인
-# ============================================================
-
-REPORT_PROMPT = """## 작업
-LSTM 예측 결과를 바탕으로 경영진/관리자가 이해할 수 있는 보고서를 작성하세요.
-
-## LSTM 예측 결과
-{lstm_result}
-
-## 시뮬레이션 설정
-{sim_config}
-
-## 보고서 형식
-다음 형식으로 한국어 보고서를 작성하세요:
-
-### 시뮬레이션 결과 분석 리포트
-
-**1. 핵심 요약**
-- 시뮬레이션 처리량: X개/시간
-- 예상 현장 성능: Y~Z개/시간
-- 신뢰도: N%
-
-**2. Sim2Real 갭 분석**
-- 예상 갭: N%
-- 주요 원인: (환경 요인 나열)
-
-**3. 권장사항**
-- 즉시 조치: ...
-- 생산 계획 수립 기준: ...
-
-**4. 주의사항**
-- 고려해야 할 리스크: ...
-
-보고서:"""
-
-
-async def generate_report_from_lstm(
-    lstm_result: dict,
-    sim_config: dict,
-    force_provider: Optional[LLMProvider] = None
-) -> LLMResponse:
-    """
-    LSTM 예측 결과 → LLM 보고서 생성 (v2.0 핵심)
-
-    Args:
-        lstm_result: LSTM 예측 결과
-            {
-                "sim_throughput": 100,
-                "predicted_real_throughput": 85,
-                "gap_percent": 15,
-                "confidence": 0.89,
-                "factors": ["temperature", "humidity"],
-                "confidence_interval": [83, 87]
-            }
-        sim_config: 시뮬레이션 설정
-    """
-    prompt = REPORT_PROMPT.format(
-        lstm_result=json.dumps(lstm_result, indent=2, ensure_ascii=False),
-        sim_config=json.dumps(sim_config, indent=2, ensure_ascii=False)
-    )
-
-    # 내부 정보 → Qwen 사용
-    sensitivity = SensitivityLevel.INTERNAL
-
-    try:
-        raw_response, provider = await call_llm(
-            prompt,
-            temperature=0.4,
-            max_tokens=2000,
             sensitivity=sensitivity,
             force_provider=force_provider
         )
